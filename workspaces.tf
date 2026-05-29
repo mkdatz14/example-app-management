@@ -1,4 +1,4 @@
-resource "tfe_workspace" "this" {
+resource "tfe_workspace" "example_app_management" {
   name = "example-app-management"
   organization = local.organization_name
   description = "Terraform Cloud workspace for managing the example-app application."
