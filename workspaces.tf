@@ -4,7 +4,7 @@ resource "tfe_workspace" "example_app_management" {
   description = "Terraform Cloud workspace for managing the example-app application."
 
   vcs_repo {
-    identifier     = "mkdatz/example-app-management"
+    identifier     = "mkdatz14/example-app-management"
     oauth_token_id = var.github_oauth_token_id
     branch         = "main"
   }
