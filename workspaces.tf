@@ -15,7 +15,7 @@ resource "tfe_workspace" "example_app_management" {
 locals {
     example_app_envs = {
         dev = {
-            auto_apply = true
+            auto_apply = false
             working_directory = "envs/dev"
             description = "Development environment for example-app- VCS triggers enabled, auto-apply enabled."
         }
