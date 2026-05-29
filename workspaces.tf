@@ -55,7 +55,7 @@ resource "tfe_variable" "example_app_plan_args" {
     for_each = local.example_app_envs
 
     key = "TF_CLI_ARGS_plan"
-    value = "-var-file=envs/${each.key}/terraform.tfvars"
+    value = "-var-file=${each.key}.tfvars"
     category = "env"
     workspace_id = tfe_workspace.example_app[each.key].id
 }
@@ -64,7 +64,7 @@ resource "tfe_variable" "example_app_apply_args" {
     for_each = local.example_app_envs
 
     key = "TF_CLI_ARGS_apply"
-    value = "-var-file=envs/${each.key}/terraform.tfvars"
+    value = "-var-file=${each.key}.tfvars"
     category = "env"
     workspace_id = tfe_workspace.example_app[each.key].id
 }
