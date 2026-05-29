@@ -1,21 +1,9 @@
-output "project_id" {
-  value = tfe_project.this.id
+output "github_oauth_token_id" {
+  description = "The ID of the GitHub OAuth token used for VCS integration."
+  value = var.github_oauth_token_id
 }
 
-output "workspace_ids" {
-  value = {
-    for key, workspace in tfe_workspace.this : key => workspace.id
-  }
-}
-
-output "workspace_names" {
-  value = {
-    for key, workspace in tfe_workspace.this : key => workspace.name
-  }
-}
-
-output "workspace_urls" {
-  value = {
-    for key, workspace in tfe_workspace.this : key => workspace.html_url
-  }
+output "hcp_terraform_management_workspace_id" {
+  description = "The ID of the Terraform Cloud workspace for example-app-management."
+  value = tfe_workspace.this.id
 }

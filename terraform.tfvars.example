@@ -1,7 +1,1 @@
-organization_name        = "my-organization"
-project_name             = "example-app"
-vcs_repository_identifier = "your-org/example-app-management"
-vcs_oauth_token_id       = "ot-xxxxxxxxxxxxxxxx"
-vcs_branch               = "main"
-
-workspace_variables = {}
+github_oauth_token_id = "XXX"
