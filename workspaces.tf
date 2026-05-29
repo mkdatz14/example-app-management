@@ -40,7 +40,7 @@ resource "tfe_workspace" "example_app" {
     working_directory = each.value.working_directory
 
     vcs_repo {
-        identifier     = "mkdatz/example-app"
+        identifier     = "mkdatz14/example-app"
         oauth_token_id = var.github_oauth_token_id
         branch         = "main"
     }
