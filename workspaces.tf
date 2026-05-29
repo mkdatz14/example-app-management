@@ -36,6 +36,7 @@ resource "tfe_workspace" "example_app" {
     for_each = local.example_app_envs
     name = "example-app-${each.key}"
     organization = local.organization_name
+    project_id = tfe_project.example_app.id
     description = each.value.description
     working_directory = each.value.working_directory
 
