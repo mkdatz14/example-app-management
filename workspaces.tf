@@ -13,23 +13,31 @@ resource "tfe_workspace" "example_app_management" {
 }
 
 locals {
-    example_app_envs = {
+    example_app_tiers = {
         dev = {
             auto_apply = false
-            working_directory = "envs/dev"
-            description = "Development environment for example-app- VCS triggers enabled, auto-apply enabled."
+            description_prefix = "Development"
         }
         staging = {
             auto_apply = false
-            working_directory = "envs/staging"
-            description = "Staging environment for example-app- VCS triggers enabled, auto-apply disabled."
+            description_prefix = "Staging"
         }
         prod = {
             auto_apply = false
-            working_directory = "envs/prod"
-            description = "Production environment for example-app- VCS triggers enabled, auto-apply disabled."
+            description_prefix = "Production"
         }
     }
+
+    example_app_envs = merge([
+        for tier, config in local.example_app_tiers : {
+            for index in range(1, 4) : "${tier}-${index}" => {
+                auto_apply = config.auto_apply
+                working_directory = "envs/${tier}/${tier}-${index}"
+                description = "${config.description_prefix} environment ${index} for example-app. VCS triggers enabled, auto-apply disabled."
+                trigger_prefixes = ["envs/${tier}/${tier}-${index}/**", "shared/**"]
+            }
+        }
+    ]...)
 }
 
 resource "tfe_workspace" "example_app" {
@@ -48,7 +56,7 @@ resource "tfe_workspace" "example_app" {
 
     auto_apply = each.value.auto_apply
     file_triggers_enabled = true
-    trigger_prefixes = ["envs/${each.key}/**", "shared/**"]
+    trigger_prefixes = each.value.trigger_prefixes
 }
 
 resource "tfe_variable" "example_app_plan_args" {

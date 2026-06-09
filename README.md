@@ -8,7 +8,7 @@ The root Terraform module manages HCP Terraform objects in organization `mkdatz`
 
 - one management workspace: `example-app-management`
 - one project: `example-app`
-- three workspaces: `example-app-dev`, `example-app-staging`, and `example-app-prod`
+- nine application workspaces: `example-app-dev-1` through `example-app-prod-3`
 - VCS settings for each workspace, including repository identifier, branch, and working directory
 - file-based trigger patterns for the application workspaces
 - workspace environment variables that set `TF_CLI_ARGS_plan` and `TF_CLI_ARGS_apply` for each application workspace
@@ -29,13 +29,19 @@ The root Terraform module manages HCP Terraform objects in organization `mkdatz`
 
 ## Workspace Mapping
 
-All three workspaces point at the same VCS repository, but each uses a different working directory:
+All nine workspaces point at the same VCS repository, but each uses a different working directory:
 
 | Workspace | Working Directory |
 | --- | --- |
-| `example-app-dev` | `envs/dev` |
-| `example-app-staging` | `envs/staging` |
-| `example-app-prod` | `envs/prod` |
+| `example-app-dev-1` | `envs/dev/dev-1` |
+| `example-app-dev-2` | `envs/dev/dev-2` |
+| `example-app-dev-3` | `envs/dev/dev-3` |
+| `example-app-staging-1` | `envs/staging/staging-1` |
+| `example-app-staging-2` | `envs/staging/staging-2` |
+| `example-app-staging-3` | `envs/staging/staging-3` |
+| `example-app-prod-1` | `envs/prod/prod-1` |
+| `example-app-prod-2` | `envs/prod/prod-2` |
+| `example-app-prod-3` | `envs/prod/prod-3` |
 
 This repository assumes those directories exist in the application Terraform repository that the workspaces will track.
 
@@ -43,9 +49,15 @@ This repository assumes those directories exist in the application Terraform rep
 
 The `tfe_workspace.example_app` resources enable file-based VCS triggers and set these patterns:
 
-- `example-app-dev`: `envs/dev/**`, `shared/**`
-- `example-app-staging`: `envs/staging/**`, `shared/**`
-- `example-app-prod`: `envs/prod/**`, `shared/**`
+- `example-app-dev-1`: `envs/dev/dev-1/**`, `shared/**`
+- `example-app-dev-2`: `envs/dev/dev-2/**`, `shared/**`
+- `example-app-dev-3`: `envs/dev/dev-3/**`, `shared/**`
+- `example-app-staging-1`: `envs/staging/staging-1/**`, `shared/**`
+- `example-app-staging-2`: `envs/staging/staging-2/**`, `shared/**`
+- `example-app-staging-3`: `envs/staging/staging-3/**`, `shared/**`
+- `example-app-prod-1`: `envs/prod/prod-1/**`, `shared/**`
+- `example-app-prod-2`: `envs/prod/prod-2/**`, `shared/**`
+- `example-app-prod-3`: `envs/prod/prod-3/**`, `shared/**`
 
 Because `shared/**` is a common path, changes there will trigger every dependent workspace.
 
