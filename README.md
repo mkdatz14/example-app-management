@@ -61,6 +61,43 @@ The `tfe_workspace.example_app` resources enable file-based VCS triggers and set
 
 Because `shared/**` is a common path, changes there will trigger every dependent workspace.
 
+## Managing Stable Variables
+
+Yes. This repo can manage simple HCP Terraform variables that are unlikely to change.
+
+The current configuration already does that for `TF_CLI_ARGS_plan` and `TF_CLI_ARGS_apply` with
+workspace-level `tfe_variable` resources in `workspaces.tf`. For values shared across all nine
+application workspaces, this repo now includes a project-level variable set pattern in
+`variable-sets.tf`.
+
+Add stable shared variables to `local.example_app_shared_variables` in `variable-sets.tf`.
+When that map is non-empty, Terraform will create one variable set, attach it to the
+`example-app` project, and populate the variables for every workspace in the project.
+
+Example:
+
+```hcl
+example_app_shared_variables = {
+	app_name = {
+		value       = "example-app"
+		description = "Shared application identifier"
+	}
+	enable_audit = {
+		value       = "true"
+		category    = "terraform"
+		description = "Enable the audit feature flag"
+	}
+}
+```
+
+Use this for low-churn defaults that should be consistent everywhere. Keep one source of truth per
+key: if a value is managed in HCP Terraform, do not also define the same variable in checked-in
+`*.tfvars` for the same workspace.
+
+For secrets or frequently rotating values, a repo-managed plain-text value is usually the wrong
+place. If you still manage a secret through Terraform, mark it `sensitive = true` and pass it in
+through a secure input path rather than hardcoding it in git.
+
 ## Prerequisites
 
 - Terraform CLI installed locally
